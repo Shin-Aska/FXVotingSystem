@@ -1,0 +1,24 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 18, 2016, 11:54:25 AM
+    Author     : Richard
+*/
+
+.rich-blue {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
+
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+.rich-blue .label {
+    
+    -fx-text-fill: white;
+}

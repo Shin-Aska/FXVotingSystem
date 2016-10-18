@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="441.0" prefWidth="567.0" style="-fx-background-color: #b3cbf2;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votingsystem.MainFormController">
+   <children>
+      <AnchorPane layoutX="7.0" layoutY="37.0" prefHeight="348.0" prefWidth="229.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="331.0" AnchorPane.topAnchor="37.0">
+         <children>
+            <TableView fx:id="posterTableView" layoutX="33.0" layoutY="48.0" prefHeight="357.0" prefWidth="223.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy></TableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="288.0" layoutY="38.0" prefHeight="357.0" prefWidth="322.0" stylesheets="@../CSS/customizedmenu.css" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0">
+         <children>
+            <Label fx:id="postIDLabel" layoutX="7.0" layoutY="38.0" prefHeight="20.0" prefWidth="60.0" text="Post ID:" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="38.0">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="postIDNumberLabel" layoutX="71.0" layoutY="38.0" prefHeight="20.0" prefWidth="187.0" text="00000000" AnchorPane.leftAnchor="71.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="38.0">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="voteThisButton" layoutX="91.0" layoutY="66.0" mnemonicParsing="false" onAction="#voteActionEffect" prefHeight="43.0" prefWidth="119.0" text="Vote This" AnchorPane.topAnchor="66.0">
+               <font>
+                  <Font name="Arial Black" size="15.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="246.0" fitWidth="229.0" layoutX="47.0" layoutY="124.0" nodeOrientation="INHERIT" pickOnBounds="true" style="-fx-border-color: blue;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="124.0">
+               <image>
+                  <Image url="@favicon.png" />
+               </image></ImageView>
+            <Label layoutX="7.0" layoutY="14.0" prefHeight="20.0" prefWidth="60.0" text="Status:">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusLabel" layoutX="71.0" layoutY="14.0" prefHeight="20.0" prefWidth="119.0" text="[Not Connected]">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="connectButton" layoutX="196.0" layoutY="14.0" mnemonicParsing="false" onAction="#connectAction" text="Connect" />
+            <Label layoutX="39.0" layoutY="370.0" text="International Research Fair">
+               <font>
+                  <Font name="Arial Bold" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <MenuBar layoutY="-1.0" prefHeight="20.0" prefWidth="567.0" styleClass="rich-blue" stylesheets="@../CSS/customizedmenu.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <menus>
+          <Menu fx:id="fileMenu" mnemonicParsing="false" style="-fx-text-fill: white;" text="File">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#newGenerateTicket" style="-fx-text-fill: black;" text="Generate New Tickets" />
+              <MenuItem mnemonicParsing="false" onAction="#newVoteWinSpawn" style="-fx-text-fill: black;" text="New Vote Item" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Settings">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#serverLocationWinSpawn" style="-fx-text-fill: black;" text="Server Location" />
+                  <MenuItem fx:id="adminLogin" mnemonicParsing="false" onAction="#adminLoginWinSpawn" style="-fx-text-fill: black;" text="Admin Login" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#helpSection" style="-fx-text-fill: black;" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

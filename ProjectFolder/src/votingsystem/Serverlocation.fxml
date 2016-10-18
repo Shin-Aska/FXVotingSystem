@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="141.0" prefWidth="382.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votingsystem.ServerlocationController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="16.0" prefWidth="71.0" text="IP Address:">
+         <font>
+            <Font name="Arial" size="12.0" />
+         </font></Label>
+      <Label layoutX="14.0" layoutY="47.0" prefHeight="16.0" prefWidth="71.0" text="DB Username:">
+         <font>
+            <Font name="Arial" size="10.0" />
+         </font></Label>
+      <Label layoutX="14.0" layoutY="78.0" prefHeight="16.0" prefWidth="71.0" text="DB Password:">
+         <font>
+            <Font name="Arial" size="10.0" />
+         </font></Label>
+      <TextField fx:id="subnet1" layoutX="99.0" layoutY="10.0" onKeyPressed="#subnet1Input" prefHeight="24.0" prefWidth="53.0" />
+      <TextField fx:id="subnet2" layoutX="167.0" layoutY="10.0" onKeyPressed="#subnet2Input" prefHeight="24.0" prefWidth="53.0" />
+      <TextField fx:id="subnet3" layoutX="238.0" layoutY="10.0" onKeyPressed="#subnet3Input" prefHeight="24.0" prefWidth="53.0" />
+      <TextField fx:id="subnet4" layoutX="309.0" layoutY="10.0" onKeyPressed="#subnet4Input" prefHeight="24.0" prefWidth="53.0" />
+      <TextField fx:id="dbUsername" layoutX="99.0" layoutY="43.0" prefHeight="24.0" prefWidth="263.0" />
+      <TextField fx:id="dbPassword" layoutX="99.0" layoutY="74.0" prefHeight="24.0" prefWidth="263.0" />
+      <Label alignment="CENTER" layoutX="152.0" layoutY="12.0" prefHeight="22.0" prefWidth="14.0" text="." textAlignment="CENTER">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="222.0" layoutY="12.0" prefHeight="22.0" prefWidth="14.0" text="." textAlignment="CENTER">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="293.0" layoutY="12.0" prefHeight="22.0" prefWidth="14.0" text="." textAlignment="CENTER">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <Button layoutX="244.0" layoutY="107.0" mnemonicParsing="false" onAction="#submitAction" prefHeight="24.0" prefWidth="49.0" text="OK">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="297.0" layoutY="107.0" mnemonicParsing="false" onAction="#cancelAction" text="Cancel">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
