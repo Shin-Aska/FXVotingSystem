@@ -50,6 +50,7 @@ public class ButtonColumn extends TableColumn implements VirtualColumn{
                                
                                 MainFormController.selectedID = Integer.parseInt(getTableView().getItems().get( getIndex() ).get(0));
                                 MainFormController.selectedName = getTableView().getItems().get( getIndex() ).get(1);
+                                MainFormController.selectedIndex = getIndex();
                                 evt.handle(event);
                             });
                             setGraphic(btn);

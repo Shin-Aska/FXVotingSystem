@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="VotingSystem.jar" size="422615" download="eager" />
+    <jar href="VotingSystem.jar" size="429492" download="eager" />
     <jar href="lib\mysql-connector-java-5.1.40-bin.jar" size="990927" download="eager" />
     <jar href="lib\sqlite-jdbc-3.8.11.2.jar" size="5575351" download="eager" />
   </resources>

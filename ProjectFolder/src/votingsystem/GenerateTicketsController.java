@@ -26,8 +26,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-import static votingsystem.MainFormController.selectedID;
-import static votingsystem.MainFormController.selectedName;
 
 /**
  * FXML Controller class
@@ -44,7 +42,8 @@ public class GenerateTicketsController implements Initializable {
     private boolean updated = false;
     private int lastID, lastNumber;
     private static final char[] CHARSET_AZ_09 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-
+    public static int selectedIndex = 0, selectedID = 0;
+    
     /**
      * Initializes the controller class.
      */
@@ -95,6 +94,13 @@ public class GenerateTicketsController implements Initializable {
                             public void handle(ActionEvent event) {
                                     
                                 String id = Integer.toString(selectedID);
+                                String ct = "";
+                                try {
+                                    ct = ConnectionController.getCategory(id);
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(GenerateTicketsController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
                                 try {
                                     ConnectionController.removeTicket(id);
                                 } catch (SQLException ex) {

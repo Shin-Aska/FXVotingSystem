@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
@@ -31,6 +32,8 @@ public class ItemSetupController implements Initializable {
     private TextField posterNameField;
     @FXML
     private TextField posterIDField;
+    @FXML
+    private ComboBox<String> categorySelector;
 
     /**
      * Initializes the controller class.
@@ -39,7 +42,10 @@ public class ItemSetupController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             posterIDField.setTextFormatter(Numeric.getTextFormatter());
-            posterIDField.setText(ConnectionController.getNextPosterID().toString());
+            posterIDField.setText(ConnectionController.getNextPosterID("Qualitative").toString());
+            categorySelector.getItems().add("Qualitative");
+            categorySelector.getItems().add("Quantitative");
+            categorySelector.getSelectionModel().select(0);
         } catch (SQLException ex) {
             Logger.getLogger(ItemSetupController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -48,7 +54,7 @@ public class ItemSetupController implements Initializable {
     @FXML
     private void addItemEvent(ActionEvent event) {
         try {
-            ConnectionController.addPoster(posterIDField.getText(), posterNameField.getText());
+            ConnectionController.addPoster(posterIDField.getText(), posterNameField.getText(), categorySelector.getSelectionModel().getSelectedItem());
             ((Node)event.getSource()).getScene().getWindow().hide();
             
             Alert msg = new Alert(Alert.AlertType.INFORMATION);
@@ -75,6 +81,12 @@ public class ItemSetupController implements Initializable {
     @FXML
     private void cancelActionEvent(ActionEvent event) {
         ((Node)event.getSource()).getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void onCategoryChange(ActionEvent event) throws SQLException {
+        
+        posterIDField.setText( ConnectionController.getNextPosterID( categorySelector.getSelectionModel().getSelectedItem() ).toString() );
     }
     
 }

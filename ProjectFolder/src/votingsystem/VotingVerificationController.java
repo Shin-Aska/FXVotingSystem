@@ -47,10 +47,12 @@ public class VotingVerificationController implements Initializable {
     @FXML
     private void voterVerifier(KeyEvent event) throws SQLException {
         
+        String candid = Candidate.list.get(MainFormController.selectedIndex).id;
+        String cat = ConnectionController.getCategory(candid);
         if (votersTextField.getText().length() >= 5) {
-            if (ConnectionController.verifyVoterID(votersTextField.getText())) {
+            if (ConnectionController.verifyVoterID(votersTextField.getText(), cat)) {
                 
-                ConnectionController.addVote(Integer.toString(MainFormController.selectedID));
+                ConnectionController.addVote(candid);
                 MainFormController.selectedID = 0;
                 MainFormController.selectedName = "";
                 voterLabel.setText("Action successful!");

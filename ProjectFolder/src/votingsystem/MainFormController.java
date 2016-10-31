@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -74,8 +76,12 @@ public class MainFormController implements Initializable {
     
     // Selected values
     
-    public static int selectedID = 0;
+    public static int selectedID = 0, selectedIndex = 0;
     public static String selectedName = "";
+    @FXML
+    private ComboBox<String> selectedCategory;
+    @FXML
+    private MenuItem showVoteCount;
     
     /**************************************************/
     // Controller Processes
@@ -84,12 +90,18 @@ public class MainFormController implements Initializable {
         admin = yes;
     }
     
+    public void resetLabel() {
+        postIDNumberLabel.setText("[None Selected]");
+    }
+    
     public void showAdminProcess() {
         if (!admin) {
             fileMenu.setVisible(false);
+            showVoteCount.setVisible(false);
         }
         else {
             fileMenu.setVisible(true);
+            showVoteCount.setVisible(true);
         }
     }
     
@@ -99,12 +111,14 @@ public class MainFormController implements Initializable {
             postIDLabel.setVisible(false);
             postIDNumberLabel.setVisible(false);
             adminLogin.setVisible(false);
+            connectButton.setText("Connect");
         }
         else {
             voteThisButton.setVisible(true);
             postIDLabel.setVisible(true);
             postIDNumberLabel.setVisible(true);
             adminLogin.setVisible(true);
+            connectButton.setText("Disconnect");
         }
     }
     
@@ -139,15 +153,18 @@ public class MainFormController implements Initializable {
                     
                     if (connected) {
                         data = FXCollections.observableArrayList();
-                        ResultSet rS = ConnectionController.fetchPosters();
+                        
+                        String cat = selectedCategory.getSelectionModel().getSelectedItem();
+                        ResultSet rS = ConnectionController.fetchPosters(cat);
                         int lid = 0, lcount = 0;
+                        Candidate.list.clear();
+                        
                         while (rS.next()) {
                             ObservableList<String> row = FXCollections.observableArrayList();
-                            for (int i = 1; i <= rS.getMetaData().getColumnCount(); i++) {
-
-                                row.add(rS.getString(i));
-                                lid = Integer.parseInt(rS.getString(1));
-                            }
+                            row.add(rS.getString(2));
+                            row.add(rS.getString(3));
+                            Candidate.list.add(new Candidate(rS.getString(1), rS.getString(2), rS.getString(3)));
+                            lid = Integer.parseInt(rS.getString(2));
                             lcount += 1;
                             data.add(row);
                         }
@@ -189,6 +206,10 @@ public class MainFormController implements Initializable {
         
         tableLoader.setCycleCount(Timeline.INDEFINITE);
         tableLoader.play();
+        
+        selectedCategory.getItems().add("Qualitative");
+        selectedCategory.getItems().add("Quantitative");
+        selectedCategory.getSelectionModel().select(0);
     }    
     
     
@@ -196,45 +217,86 @@ public class MainFormController implements Initializable {
     @FXML
     private void serverLocationWinSpawn(ActionEvent event) throws IOException {
         
-        Parent root = FXMLLoader.load(getClass().getResource("Serverlocation.fxml"));
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner( voteThisButton.getScene().getWindow() );
-        stage.initStyle(StageStyle.UNIFIED);
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
+        if (!connected) {
+            Parent root = FXMLLoader.load(getClass().getResource("Serverlocation.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner( voteThisButton.getScene().getWindow() );
+            stage.initStyle(StageStyle.UNIFIED);
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setHeaderText("Action ignored");
+            alert.setContentText("You cannot change the Server Location while the program is still connected. Please close the connection and try again.");
+            alert.showAndWait();
+        }  
     }
 
     @FXML
     private void adminLoginWinSpawn(ActionEvent event) throws IOException {
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminLogin.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner( voteThisButton.getScene().getWindow() );
-        stage.initStyle(StageStyle.UNIFIED);
-        stage.setResizable(false);
-        stage.setScene(scene); 
-        stage.show();
+        if (connected) {
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminLogin.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner( voteThisButton.getScene().getWindow() );
+            stage.initStyle(StageStyle.UNIFIED);
+            stage.setResizable(false);
+            stage.setScene(scene); 
+            stage.show();
+
+            loader.<AdminLoginController>getController().setParent(this);
+        }
+        else {
+            
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setHeaderText("Illegal Action detected");
+            alert.setContentText("This action requires an active connection. Please try to connect to an appropriate server first!");
+            alert.showAndWait();
+        }
         
-        loader.<AdminLoginController>getController().setParent(this);
     }
 
     @FXML
     private void connectAction(ActionEvent event) {
         
         try {
-            ConnectionController.connect();
-            connected = true;
+            
+            if (!connected) {
+                ConnectionController.connect();
+                connected = true;
+
+                statusLabel.setText(Configuration.ipaddress);
+                postIDNumberLabel.setText("[None Selected]");
+                selectedID = 0;
+                selectedName = "";
+            }
+            else {
+                ConnectionController.disconnect();
+                connected = false;
+                
+                statusLabel.setText("[Not connected]");
+                postIDNumberLabel.setText("");
+                selectedID = 0;
+                selectedName = "";
+                posterTableView.getColumns().clear();
+                
+                
+                lastID = 0;
+                lastNumber = 0;
+                admin = false;
+            }
+            
+            showAdminProcess();
             showConnectedProcess();
-            statusLabel.setText(Configuration.ipaddress);
-            postIDNumberLabel.setText("[None Selected]");
-            selectedID = 0;
-            selectedName = "";
+                
         }
         catch (Exception ex) {
             
@@ -258,6 +320,11 @@ public class MainFormController implements Initializable {
         stage.setResizable(false);
         stage.setScene(scene); 
         stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                resetLabel();
+            }
+        });
     }
 
     @FXML
@@ -304,5 +371,19 @@ public class MainFormController implements Initializable {
     private void helpSection(ActionEvent event) {
         
         
+    }
+
+    @FXML
+    private void showVoteWindow(ActionEvent event) throws IOException {
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("showCountDownVote.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner( voteThisButton.getScene().getWindow() );
+        stage.initStyle(StageStyle.UNIFIED);
+        stage.setScene(scene); 
+        stage.show();
     }
 }
