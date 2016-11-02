@@ -209,6 +209,7 @@ public class MainFormController implements Initializable {
         
         selectedCategory.getItems().add("Qualitative");
         selectedCategory.getItems().add("Quantitative");
+        selectedCategory.getItems().add("All");
         selectedCategory.getSelectionModel().select(0);
     }    
     
@@ -339,7 +340,14 @@ public class MainFormController implements Initializable {
             stage.initOwner( voteThisButton.getScene().getWindow() );
             stage.initStyle(StageStyle.UNIFIED);
             stage.setResizable(false);
-            stage.setScene(scene); 
+            stage.setScene(scene);
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    selectedID = 0;
+                    selectedName = "";
+                    resetLabel();
+                }
+            });
             stage.show();
         }
         else {
@@ -380,7 +388,7 @@ public class MainFormController implements Initializable {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initOwner( voteThisButton.getScene().getWindow() );
         stage.initStyle(StageStyle.UNIFIED);
         stage.setScene(scene); 

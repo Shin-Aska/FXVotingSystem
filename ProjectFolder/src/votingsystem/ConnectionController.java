@@ -39,11 +39,14 @@ public class ConnectionController {
     }
     
     public static ResultSet fetchPosters (String category) throws SQLException {
-        return network.executeStatement("SELECT id, posterID, name FROM candidate WHERE votecategory = ? ORDER BY posterID", "'" + category + "'");
+        if (category.equals("All"))
+            return network.executeStatement("SELECT id, id AS 'Poster ID', name FROM candidate ORDER BY id");
+        else
+            return network.executeStatement("SELECT id, posterID AS 'Poster ID', name FROM candidate WHERE votecategory = ? ORDER BY posterID", "'" + category + "'");
     }
     
     public static ResultSet fetchPosterVotes () throws SQLException {
-        return network.executeStatement("SELECT name, votecount FROM candidate ORDER BY votecount DESC");
+        return network.executeStatement("SELECT id, name, votecount FROM candidate ORDER BY votecount DESC");
     }
     
     public static ResultSet fetchTickets () throws SQLException {
