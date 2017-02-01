@@ -48,7 +48,7 @@ public class AdminLoginController implements Initializable {
         if (ConnectionController.validateUser(usernameTextField.getText(), passwordTextField.getText())) {
             Alert msg = new Alert(AlertType.INFORMATION);
             msg.setHeaderText("Login successful");
-            msg.setContentText("Username and Password successfully confirmed");
+            msg.setContentText("Welcome! You now have administrator access on this system. Please check the file menu for more additional functionalities");
             msg.initModality(Modality.WINDOW_MODAL);
             msg.initOwner(node.getScene().getWindow());
             msg.initStyle(StageStyle.UNIFIED);
