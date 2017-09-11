@@ -1,0 +1,26 @@
+.ticket {
+    border: 1px solid black;
+    width: 100px;
+    display: inline-block;
+    margin: 2px;
+}
+
+.ticketID {
+
+    text-align: center;
+    margin: 0px;
+    margin-top: 5px;
+}
+
+.ticketValue {
+    text-align: center;
+    font-size: 18pt;
+    font-weight: bold;
+    margin: 0px;
+}
+
+
+@page {
+    size: auto;   /* auto is the initial value */
+    margin: 0;  /* this affects the margin in the printer settings */
+}
